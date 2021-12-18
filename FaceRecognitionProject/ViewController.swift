@@ -19,34 +19,32 @@ class ViewController: UIViewController {
     }
 
     @IBAction func signInClicked(_ sender: Any) {
-        let authContext = LAContext()
         
+      let authContext = LAContext()
         var error : NSError?
         
-        
-        // error değişkeni oluşturduk. pointer olması için başına & işareti koyduk..
         if authContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
-        {
-            // 2. gerçekten bunu değerlendir.
+                {
             authContext.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "IS it you?") { success, error in
                 if success == true
                 {
-                    print("success")
-                    
-                    
-                    // #segue kısmında hata verirse , ana thread'te işlem yapmak gerekiyor dikkat!!!
                     DispatchQueue.main.async {
+                        print("success")
                         self.performSegue(withIdentifier: "toSecondVC", sender: nil)
                     }
                 }
                 else
                 {
                     DispatchQueue.main.async {
-                        self.errorLabel.text = "Error!"
+                        self.errorLabel.text = "Giriş Yapılamadı"
                     }
                 }
+                
             }
         }
+        
+        
+       
     }
 }
 
